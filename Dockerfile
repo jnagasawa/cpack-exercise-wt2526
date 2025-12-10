@@ -1,4 +1,4 @@
-From ubuntu:24.04
+FROM ubuntu:24.04
 
 # Install a few dependencies
 RUN apt-get -qq update && \
@@ -12,7 +12,10 @@ RUN apt-get -qq update && \
         vim \
         tree \
         lintian \
-        unzip
+        tree \
+        lintian \
+        unzip \
+        rsync
         
 # Get, unpack, build, and install yaml-cpp        
 RUN mkdir software && cd software && \
@@ -25,4 +28,7 @@ ENV LIBRARY_PATH $LIBRARY_PATH:/usr/local/lib/
 ENV LD_LIBRARY_PATH $LD_LIBRARY_PATH:/usr/local/lib/
 ENV PATH $PATH:/usr/local/bin/
 
-CMD ["/bin/bash"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
